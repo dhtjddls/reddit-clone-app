@@ -1,5 +1,7 @@
 import InputGroup from '@/components/InputGroup';
+import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 const Register = () => {
@@ -7,6 +9,25 @@ const Register = () => {
   const [errors, setErrors] = useState<any>({});
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const router = useRouter();
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      const res = await axios.post('/auth/register', {
+        email,
+        username,
+        password,
+      });
+      console.log(res);
+      router.push('/login');
+    } catch (error: any) {
+      console.error(error);
+      setErrors(error?.response?.data || {});
+    }
+  };
+
   return (
     <div className="bg-white">
       <div className="flex flex-col items-center justify-center h-screen p-6">
@@ -31,7 +52,10 @@ const Register = () => {
               setValue={setPassword}
               error={errors.password}
             />
-            <button className="w-full py-2 mb-1 text-xs font-bold text-white uppercase bg-gray-400 border border-gray-400 rounded">
+            <button
+              onClick={handleSubmit}
+              className="w-full py-2 mb-1 text-xs font-bold text-white uppercase bg-gray-400 border border-gray-400 rounded"
+            >
               회원 가입
             </button>
           </form>

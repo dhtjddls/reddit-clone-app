@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { DbModule } from 'src/db/db.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import Sub from './entities/sub.entity';
 import { SubController } from './sub.controller';
-import { subProviders } from './sub.provider';
 import { SubService } from './sub.service';
 
 @Module({
-  imports: [DbModule],
+  imports: [TypeOrmModule.forFeature([Sub])],
   controllers: [SubController],
-  providers: [SubService, ...subProviders],
+  providers: [SubService],
 })
 export class SubModule {}

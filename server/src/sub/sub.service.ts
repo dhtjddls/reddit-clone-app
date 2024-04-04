@@ -1,4 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateSubDto } from './dto/create-sub.dto';
 import { UpdateSubDto } from './dto/update-sub.dto';
@@ -6,9 +7,7 @@ import Sub from './entities/sub.entity';
 
 @Injectable()
 export class SubService {
-  constructor(
-    @Inject('SUB_REPOSITORY') private subRepository: Repository<Sub>,
-  ) {}
+  constructor(@InjectRepository(Sub) private subRepository: Repository<Sub>) {}
   create(createSubDto: CreateSubDto) {
     return 'This action adds a new sub';
   }
